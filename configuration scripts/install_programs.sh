@@ -22,7 +22,8 @@
 	# Productivity
 	flatpak install --noninteractive flathub \
 	  io.gitlab.librewolf-community \
-	  md.obsidian.Obsidian
+	  md.obsidian.Obsidian \
+	  org.onlyoffice.desktopeditors
 	  
 	# System Utilities
 	flatpak install --noninteractive flathub \
@@ -69,7 +70,6 @@
 	flatpak install --noninteractive flathub \
 	  org.kde.krita \
 	  org.kde.kdenlive \
-	  org.audacityteam.Audacity \
-	  org.inkscape.Inkscape
+	  org.audacityteam.Audacity
 	  
 flatpak update --appstream && flatpak update -y
