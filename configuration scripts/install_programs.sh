@@ -17,19 +17,19 @@
 	  org.gnome.Logs \
 	  org.gnome.TextEditor \
 	  org.gnome.Showtime \
-	  org.gnome.DejaDup
+	  org.gnome.DejaDup \
 	  
 	# Productivity
 	flatpak install --noninteractive flathub \
 	  io.gitlab.librewolf-community \
 	  md.obsidian.Obsidian \
-	  org.onlyoffice.desktopeditors
+	  org.onlyoffice.desktopeditors \
 	  
 	# System Utilities
 	flatpak install --noninteractive flathub \
 	  com.github.tchx84.Flatseal \
 	  me.timschneeberger.jdsp4linux \
-	  org.pulseaudio.pavucontrol
+	  org.pulseaudio.pavucontrol \
 	  
 	# OpenTabletDriver
 	wget https://github.com/OpenTabletDriver/OpenTabletDriver/releases/download/v0.6.5.0/OpenTabletDriver.rpm
@@ -61,7 +61,7 @@
 	flatpak install --noninteractive \
 	  flathub io.github.shiftey.Desktop \
 	  org.godotengine.Godot \
-	  flathub org.gnome.Boxes
+	  flathub org.gnome.Boxes \
 		
 ##############################
 # Design & Creatives
@@ -70,6 +70,7 @@
 	flatpak install --noninteractive flathub \
 	  org.kde.krita \
 	  org.kde.kdenlive \
-	  org.audacityteam.Audacity
+	  org.audacityteam.Audacity \
+	  org.darktable.Darktable \
 	  
 flatpak update --appstream && flatpak update -y
