@@ -56,6 +56,7 @@
 	  nvm alias default node
 	'
 	cp -r nvim ~/.config/
+	cp resources/run_nvim.sh ~/
 	
 	# Tools via Flatpak
 	flatpak install --noninteractive \
