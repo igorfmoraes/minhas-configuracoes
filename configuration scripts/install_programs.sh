@@ -18,6 +18,7 @@
 	  org.gnome.TextEditor \
 	  org.gnome.Showtime \
 	  org.gnome.DejaDup \
+	  org.gnome.SimpleScan \
 	  
 	# Productivity
 	flatpak install --noninteractive flathub \
