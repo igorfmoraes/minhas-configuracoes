@@ -1,7 +1,7 @@
 require("conform").setup({
 	formatters_by_ft = {
-		javascript = { "prettier" },
-		vue = { "prettier" },
+		javascript = { "prettierd","prettier" },
+		vue = { "prettierd","prettier" },
 		lua = { "stylua" },
 		python = { "black" },
 	},
