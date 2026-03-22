@@ -22,7 +22,8 @@
 	  
 	# Productivity
 	flatpak install --noninteractive flathub \
-	  io.gitlab.librewolf-community \
+	  app.zen_browser.zen \
+	  com.vivaldi.Vivaldi \
 	  md.obsidian.Obsidian \
 	  org.onlyoffice.desktopeditors \
 	  
@@ -30,7 +31,6 @@
 	flatpak install --noninteractive flathub \
 	  com.github.tchx84.Flatseal \
 	  me.timschneeberger.jdsp4linux \
-	  org.pulseaudio.pavucontrol \
 	  
 	# OpenTabletDriver
 	wget https://github.com/OpenTabletDriver/OpenTabletDriver/releases/download/v0.6.5.0/OpenTabletDriver.rpm
@@ -74,5 +74,6 @@
 	  org.kde.kdenlive \
 	  org.audacityteam.Audacity \
 	  org.darktable.Darktable \
+	  org.blender.Blender
 	  
 flatpak update --appstream && flatpak update -y
