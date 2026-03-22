@@ -18,3 +18,20 @@ sudo fwupdmgr update
 
 # Disable NetworkManager wait-online
 sudo systemctl disable NetworkManager-wait-online.service
+
+# This Isn't Really Related to Packages
+# Zram Configuration
+
+cat <<EOF | sudo tee /etc/sysctl.d/99-zram-tuning.conf > /dev/null
+vm.swappiness = 180
+vm.page-cluster = 0
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+EOF
+
+cat <<EOF | sudo tee /etc/systemd/zram-generator.conf.d/override.conf > /dev/null
+[zram0]
+zram-size = ram / 1
+compression-algorithm = zstd
+swap-priority = 100 
+EOF
