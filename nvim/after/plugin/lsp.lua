@@ -24,6 +24,7 @@ require("mason-tool-installer").setup({
 		"stylua",
 		"black",
 		"emmet-language-server",
+		"gdscript-formatter",
 	},
 })
 
@@ -91,4 +92,16 @@ vim.api.nvim_create_autocmd("FileType", {
 			})
 		end
 	end,
+})
+
+-- Godot
+local lspconfig = require('lspconfig')
+local port = os.getenv('GDScript_Port') or '6005'
+local pipe = '/tmp/godot.pipe' 
+
+lspconfig.gdscript.setup({
+  cmd = vim.lsp.rpc.connect('127.0.0.1', tonumber(port)),
+  on_attach = function(client, bufnr)
+    vim.fn.serverstart(pipe)
+  end
 })
