@@ -95,13 +95,14 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Godot
-local lspconfig = require('lspconfig')
 local port = os.getenv('GDScript_Port') or '6005'
 local pipe = '/tmp/godot.pipe' 
 
-lspconfig.gdscript.setup({
+vim.lsp.config('gdscript', {
   cmd = vim.lsp.rpc.connect('127.0.0.1', tonumber(port)),
   on_attach = function(client, bufnr)
     vim.fn.serverstart(pipe)
   end
 })
+
+vim.lsp.enable('gdscript')
