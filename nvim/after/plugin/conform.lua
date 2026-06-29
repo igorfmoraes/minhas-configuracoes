@@ -4,6 +4,9 @@ require("conform").setup({
 		vue = { "prettierd","prettier" },
 		lua = { "stylua" },
 		python = { "black" },
+		gdscript = { "gdscript-formatter" },
+		c = { "clang-format" },
+		cpp = { "clang-format" },
 	},
 	format_on_save = {
 		lsp_fallback = true,
