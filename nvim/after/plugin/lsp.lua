@@ -19,12 +19,12 @@ require("mason").setup()
 
 require("mason-tool-installer").setup({
 	ensure_installed = {
+		"black",
 		"eslint_d",
+		"emmet_language_server",
+		"gdscript-formatter",
 		"prettierd",
 		"stylua",
-		"black",
-		"emmet-language-server",
-		"gdscript-formatter",
 	},
 })
 
@@ -34,6 +34,7 @@ require("mason-lspconfig").setup({
 		"html",
 		"lua_ls",
 		"pyright",
+		"rust_analyzer",
 	},
 	handlers = {
 		lsp_zero.default_setup,
@@ -58,7 +59,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 		local root_dir = vim.fs.root(args.buf, { "package.json", "tsconfig.json", "jsconfig.json", ".git" })
 		if not root_dir then
-			return
+			root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
 		end
 
 		vim.lsp.start({

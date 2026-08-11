@@ -7,6 +7,7 @@ require("conform").setup({
 		gdscript = { "gdscript-formatter" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
+		rsut = { "rustfmt", "rust_analyzer" },
 	},
 	format_on_save = {
 		lsp_fallback = true,
