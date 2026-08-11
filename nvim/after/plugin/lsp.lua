@@ -25,6 +25,8 @@ require("mason-tool-installer").setup({
 		"gdscript-formatter",
 		"prettierd",
 		"stylua",
+		"typescript-language-server",
+		"vue-language-server",
 	},
 })
 
@@ -38,6 +40,8 @@ require("mason-lspconfig").setup({
 	},
 	handlers = {
 		lsp_zero.default_setup,
+		ts_ls = function() end,
+		vue_ls = function() end,
 	},
 })
 
