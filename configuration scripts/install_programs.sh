@@ -32,6 +32,11 @@
 	  com.github.tchx84.Flatseal \
 	  me.timschneeberger.jdsp4linux \
 	  
+	flatpak permission-set background background me.timschneeberger.jdsp4linux yes
+	mkdir -p ~/.config/autostart
+	cp /var/lib/flatpak/exports/share/applications/me.timschneeberger.jdsp4linux.desktop ~/.config/autostart/
+	sed -i 's|^Exec=.*|Exec=/bin/sh -c "sleep 5; flatpak run me.timschneeberger.jdsp4linux --tray"|' ~/.config/autostart/me.timschneeberger.jdsp4linux.desktop
+	  
 	# OpenTabletDriver
 	wget https://github.com/OpenTabletDriver/OpenTabletDriver/releases/download/v0.6.5.0/OpenTabletDriver.rpm
 	sudo rpm-ostree install OpenTabletDriver.rpm -y
