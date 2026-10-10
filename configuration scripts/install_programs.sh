@@ -78,8 +78,20 @@
 	flatpak install --noninteractive flathub \
 	  org.kde.krita \
 	  org.kde.kdenlive \
+	  org.gimp.GIMP \
 	  org.audacityteam.Audacity \
-	  org.darktable.Darktable \
-	  org.blender.Blender
+	  org.blender.Blender \
+	  io.lmms.LMMS
+	  com.obsproject.Studio \
+	  
+##############################
+# Gaming
+##############################
+
+flatpak install --noninteractive flathub \
+	  com.heroicgameslauncher.hgl \
+	  org.libretro.RetroArch \
+	  com.valvesoftware.Steam \
+	  
 	  
 flatpak update --appstream && flatpak update -y
