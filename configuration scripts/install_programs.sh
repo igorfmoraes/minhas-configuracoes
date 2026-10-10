@@ -55,7 +55,8 @@
 	toolbox list | grep -q dev-env || toolbox create --container dev-env
 	toolbox run --container dev-env bash -c '
 	  sudo dnf install -y git neovim
-	  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+	  NVM_LATEST_VERSION=$(curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+	  curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_LATEST_VERSION}/install.sh" | bash
 	  export NVM_DIR="$HOME/.nvm"
 	  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 	  nvm install node
