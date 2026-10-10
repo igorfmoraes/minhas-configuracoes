@@ -1,6 +1,6 @@
 function Color()
 	vim.cmd([[colorscheme nord]])
-	vim.cmd([[set background=light]])
+	vim.cmd([[set background=dark]])
 	vim.g.nord_italic = false
 	vim.g.nord_bold = true
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })

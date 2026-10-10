@@ -3,17 +3,54 @@ vim.lsp.commands["setContext"] = function(_, _)
 	return {}
 end
 
--- pcall avoids nil errors when requiring lsp-zero fails to return a valid value
-local lsp_zero_status, lsp_zero = pcall(require, "lsp-zero")
-if not lsp_zero_status or not lsp_zero then
-	vim.notify("lsp-zero failed to load. Check lazy.nvim setup.", vim.log.levels.ERROR)
-	return
-end
+vim.lsp.config("*", {
+	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+})
 
-lsp_zero.preset("recommended")
-lsp_zero.on_attach(function(client, bufnr)
-	lsp_zero.default_keymaps({ buffer = bufnr })
-end)
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("wandering-raven-lsp-keymaps", { clear = true }),
+	callback = function(event)
+		local function map(modes, lhs, rhs, desc)
+			vim.keymap.set(modes, lhs, rhs, { buffer = event.buf, desc = "LSP: " .. desc })
+		end
+
+		map("n", "K", vim.lsp.buf.hover, "hover")
+		map("n", "gd", vim.lsp.buf.definition, "definition")
+		map("n", "gD", vim.lsp.buf.declaration, "declaration")
+		map("n", "gi", vim.lsp.buf.implementation, "implementation")
+		map("n", "go", vim.lsp.buf.type_definition, "type definition")
+		map("n", "gr", vim.lsp.buf.references, "references")
+		map("n", "gs", vim.lsp.buf.signature_help, "signature help")
+		map("n", "<F2>", vim.lsp.buf.rename, "rename")
+		map({ "n", "x" }, "<F3>", function()
+			vim.lsp.buf.format({ async = true })
+		end, "format")
+		map({ "n", "x" }, "<F4>", vim.lsp.buf.code_action, "code action")
+		map("n", "gl", vim.diagnostic.open_float, "show diagnostic")
+		map("n", "[d", function()
+			vim.diagnostic.jump({ count = -1 })
+		end, "previous diagnostic")
+		map("n", "]d", function()
+			vim.diagnostic.jump({ count = 1 })
+		end, "next diagnostic")
+	end,
+})
+
+local cmp = require("cmp")
+cmp.setup({
+	snippet = {
+		expand = function(args)
+			require("luasnip").lsp_expand(args.body)
+		end,
+	},
+	mapping = cmp.mapping.preset.insert({
+		["<C-u>"] = cmp.mapping.scroll_docs(-4),
+		["<C-d>"] = cmp.mapping.scroll_docs(4),
+	}),
+	sources = cmp.config.sources({
+		{ name = "nvim_lsp" },
+	}),
+})
 
 require("mason").setup()
 
@@ -21,7 +58,7 @@ require("mason-tool-installer").setup({
 	ensure_installed = {
 		"black",
 		"eslint_d",
-		"emmet_language_server",
+		"emmet-language-server",
 		"gdscript-formatter",
 		"prettierd",
 		"stylua",
@@ -38,76 +75,35 @@ require("mason-lspconfig").setup({
 		"pyright",
 		"rust_analyzer",
 	},
-	handlers = {
-		lsp_zero.default_setup,
-		ts_ls = function() end,
-		vue_ls = function() end,
-	},
+	automatic_enable = true,
 })
 
--- ============================================================================================
--- TypeScript and Vue are NOT in Mason LSP Config, because I couldn't get them to work that way
--- Native LSP config bypasses nvim-lspconfig to eliminate hybrid-mode blocks
--- ============================================================================
+local vue_language_server_path = vim.fn.stdpath("data")
+	.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "javascript", "typescript", "vue" },
-	callback = function(args)
-		local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
-		local vue_path = mason_packages .. "/vue-language-server"
-		local ts_path = mason_packages .. "/typescript-language-server"
-
-		if vim.fn.isdirectory(vue_path) == 0 or vim.fn.isdirectory(ts_path) == 0 then
-			return
-		end
-
-		local root_dir = vim.fs.root(args.buf, { "package.json", "tsconfig.json", "jsconfig.json", ".git" })
-		if not root_dir then
-			root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
-		end
-
-		vim.lsp.start({
-			name = "ts_ls",
-			cmd = { "typescript-language-server", "--stdio" },
-			root_dir = root_dir,
-			init_options = {
-				plugins = {
-					{
-						name = "@vue/typescript-plugin",
-						location = vue_path .. "/node_modules/@vue/language-server",
-						languages = { "vue" },
-					},
-				},
+vim.lsp.config("ts_ls", {
+	init_options = {
+		plugins = {
+			{
+				name = "@vue/typescript-plugin",
+				location = vue_language_server_path,
+				languages = { "vue" },
+				configNamespace = "typescript",
 			},
-		})
-
-		if vim.bo[args.buf].filetype == "vue" then
-			vim.lsp.start({
-				name = "vue_ls",
-				cmd = { "vue-language-server", "--stdio" },
-				root_dir = root_dir,
-				init_options = {
-					typescript = {
-						tsdk = ts_path .. "/node_modules/typescript/lib",
-					},
-					vue = {
-						hybridMode = true,
-					},
-				},
-			})
-		end
-	end,
+		},
+	},
+	filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
 })
 
 -- Godot
-local port = os.getenv('GDScript_Port') or '6005'
-local pipe = '/tmp/godot.pipe' 
+local port = os.getenv("GDScript_Port") or "6005"
+local pipe = "/tmp/godot.pipe"
 
-vim.lsp.config('gdscript', {
-  cmd = vim.lsp.rpc.connect('127.0.0.1', tonumber(port)),
-  on_attach = function(client, bufnr)
-    vim.fn.serverstart(pipe)
-  end
+vim.lsp.config("gdscript", {
+	cmd = vim.lsp.rpc.connect("127.0.0.1", tonumber(port)),
+	on_attach = function(client, bufnr)
+		vim.fn.serverstart(pipe)
+	end,
 })
 
-vim.lsp.enable('gdscript')
+vim.lsp.enable("gdscript")

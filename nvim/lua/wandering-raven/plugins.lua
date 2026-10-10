@@ -2,33 +2,34 @@ local plugins = {
 	-- Appearance
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false,
 		build = ":TSUpdate",
-		dependencies = "nvim-lua/plenary.nvim",
 	},
-	"shaunsingh/nord.nvim",
+	{ "shaunsingh/nord.nvim" },
 	{
 		"sphamba/smear-cursor.nvim",
 		opts = {},
 	},
 
 	-- Completers
-	"windwp/nvim-autopairs",
-	"windwp/nvim-ts-autotag",
+	{ "windwp/nvim-autopairs" },
+	{ "windwp/nvim-ts-autotag" },
 
-	{ "williamboman/mason.nvim" },
+	{ "mason-org/mason.nvim" },
 	{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
-	{ "williamboman/mason-lspconfig.nvim" },
+	{
+		"mason-org/mason-lspconfig.nvim",
+		dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
+	},
 
-	{ "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
 	{ "neovim/nvim-lspconfig" },
 	{ "hrsh7th/cmp-nvim-lsp" },
 	{ "hrsh7th/nvim-cmp" },
 	{ "L3MON4D3/LuaSnip" },
 
 	-- Formatters
-	{
-		"stevearc/conform.nvim",
-	},
+	{ "stevearc/conform.nvim" },
 
 	-- Navigation
 	{
@@ -38,8 +39,13 @@ local plugins = {
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.5",
+		tag = "v0.2.1",
+		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-	{ "akinsho/toggleterm.nvim", version = "*", config = true },
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		config = true,
+	},
 }
 require("lazy").setup(plugins, {})
